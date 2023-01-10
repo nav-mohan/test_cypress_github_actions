@@ -1,14 +1,13 @@
 <h1> Example Github Actions to run Cypress Tests </h1>
 
 ```
-
 name: End-to-end tests
 on:
   pull_request:
     branches:
       - "master"
 jobs:
-  cypress-run: # this is the name of this job. this is what Github Status Checks refers to
+  cypress-run:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
@@ -17,6 +16,13 @@ jobs:
       # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v4
+        
+      - name: Report status
+        if: success()
+        run: npx github-status-reporter success --token ${{ secrets.GITHUB_TOKEN }}
+      - name: Report status
+        if: failure()
+        run: npx github-status-reporter failure --token ${{ secrets.GITHUB_TOKEN }}
 
 ```
 <li>
