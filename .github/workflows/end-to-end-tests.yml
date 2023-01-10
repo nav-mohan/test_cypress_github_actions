@@ -13,3 +13,10 @@ jobs:
       # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v4
+        
+      - name: Report status
+        if: success()
+        run: npx github-status-reporter success --token ${{ secrets.GITHUB_TOKEN }}
+      - name: Report status
+        if: failure()
+        run: npx github-status-reporter failure --token ${{ secrets.GITHUB_TOKEN }}
